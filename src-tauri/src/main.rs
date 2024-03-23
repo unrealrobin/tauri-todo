@@ -4,7 +4,7 @@
 mod setupfile;
 mod crudops;
 use setupfile::setup_dir;
-use crudops::{create_item, write_to_db};
+use crudops::{initialize_db, create_item, write_to_db};
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 //
@@ -18,11 +18,10 @@ fn main() {
     match setup_dir() {
         Ok(()) => {
 
-            let some_todo = create_item("adding some todo.");
-
-            write_to_db(some_todo).expect("Failed to Write to db");
-
-
+            initialize_db().expect("failed to initialize");
+            create_item("first todo");
+            create_item("second todo");
+            create_item("third todo");
 
             tauri::Builder::default()
             .invoke_handler(tauri::generate_handler![greet])

@@ -1,5 +1,8 @@
+use crate::setupfile::setup_dir;
+
+
 use serde::{Deserialize, Serialize};
-use std::io::Result as IoResult;
+use std::{collections::HashMap, hash::Hash, io::Result as IoResult};
 use serde_json::Result as JsonResult;
 use std::fs;
 
@@ -11,31 +14,63 @@ pub struct TodoItem {
     is_complete: bool,
 }
 
-pub fn create_item(text: &str) -> TodoItem {
+pub fn create_item(text: &str)  {
     let new_item = TodoItem {
         text: String::from(text),
         is_complete: false,
     };
 
-    return new_item;
+    add_to_list(new_item).expect("failed to add to list");
+}
+
+pub fn add_to_list(item: TodoItem) -> Result<(), Box<dyn std::error::Error>> {
+
+    let mut list = read_db()?;
+
+    list.insert(list.len() as i32, item );
+
+    clear_db()?;
+
+    write_to_db(list)?;
+
+    Ok(())
+
+
 }
 
 
-pub fn write_to_db(todo_item: TodoItem) -> IoResult<()> {
-    let item = serde_json::to_string(&todo_item).expect("Failed to Serialize.");
+pub fn write_to_db(todo_list: HashMap<i32, TodoItem>) -> IoResult<()> {
+    let list = serde_json::to_string_pretty(&todo_list).expect("Failed to Serialize.");
+
 
     //TODO: Write this JSON to the tododb.json file
-    fs::write("C:/folio/tododb.json", item)?;
+    fs::write("C:/folio/tododb.json", list)?;
 
-    read_db();
+    //TODO: Get any Existing Items in the list as Hashmap. Add a new Todo Item to the Hashmap. Add to DB.
 
     Ok(())
 }
 
-pub fn read_db () -> Result<TodoItem, Box<dyn std::error::Error>> {
+pub fn read_db () -> Result<HashMap<i32, TodoItem>, Box<dyn std::error::Error>> {
     let data: String = fs::read_to_string("C:/folio/tododb.json")?;
-    let todo_item: TodoItem = serde_json::from_str(&data)?;
+    let todo_list: HashMap<i32, TodoItem> = serde_json::from_str(&data)?;
 
-    println!("Data from db is: {:?}", todo_item);
-    Ok(todo_item)
+    println!("Data from db is: {:?}", todo_list);
+    Ok(todo_list)
+}
+
+pub fn clear_db () -> Result<(), std::io::Error> {
+    fs::File::create("C:/folio/tododb.json")?;
+    Ok(())
+}
+
+pub fn initialize_db () -> Result<(), Box<dyn std::error::Error>> {
+    setup_dir()?;
+
+    let map: HashMap<i32, TodoItem> = HashMap::new();
+
+    write_to_db(map)?;
+
+    Ok(())
+
 }
