@@ -1,9 +1,7 @@
 use crate::setupfile::setup_dir;
 
-
 use serde::{Deserialize, Serialize};
-use std::{collections::HashMap, hash::Hash, io::Result as IoResult};
-use serde_json::Result as JsonResult;
+use std::{collections::HashMap, io::Result as IoResult};
 use std::fs;
 
 //use std::collections::HashMap;
@@ -14,6 +12,7 @@ pub struct TodoItem {
     is_complete: bool,
 }
 
+#[tauri::command]
 pub fn create_item(text: &str)  {
     let new_item = TodoItem {
         text: String::from(text),
@@ -35,9 +34,7 @@ pub fn add_to_list(item: TodoItem) -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 
-
 }
-
 
 pub fn write_to_db(todo_list: HashMap<i32, TodoItem>) -> IoResult<()> {
     let list = serde_json::to_string_pretty(&todo_list).expect("Failed to Serialize.");
@@ -46,7 +43,6 @@ pub fn write_to_db(todo_list: HashMap<i32, TodoItem>) -> IoResult<()> {
     //TODO: Write this JSON to the tododb.json file
     fs::write("C:/folio/tododb.json", list)?;
 
-    //TODO: Get any Existing Items in the list as Hashmap. Add a new Todo Item to the Hashmap. Add to DB.
 
     Ok(())
 }
@@ -73,4 +69,15 @@ pub fn initialize_db () -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 
+}
+
+#[tauri::command]
+pub fn delete_item(key: i32) -> Result<(), Box<dyn std::error::Error>> {
+    let mut map = read_db()?;
+
+    map.remove_entry(&key);
+
+    write_to_db(map)?;
+
+    Ok(())
 }

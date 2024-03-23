@@ -4,7 +4,7 @@
 mod setupfile;
 mod crudops;
 use setupfile::setup_dir;
-use crudops::{initialize_db, create_item, write_to_db};
+use crudops::{initialize_db, create_item, delete_item};
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 //
@@ -22,6 +22,7 @@ fn main() {
             create_item("first todo");
             create_item("second todo");
             create_item("third todo");
+            delete_item(1).expect("Could not Find Todo.");
 
             tauri::Builder::default()
             .invoke_handler(tauri::generate_handler![greet])
