@@ -3,7 +3,7 @@ use std::fs;
 use std::path::{Path, PathBuf};
 
 
-
+// Setup the Directory and File for storing users todo json data.
 pub fn setup_dir() -> Result<()> {
     let root_dir = "C:/";
     let folio_dir_name = "folio";
@@ -16,13 +16,15 @@ pub fn setup_dir() -> Result<()> {
     Ok(())
 }
 
-pub fn create_dir(pathname: PathBuf) -> Result<()> {
+// Create the directory for storing json data.
+fn create_dir(pathname: PathBuf) -> Result<()> {
     fs::create_dir(pathname)?;
     return Ok(())
     
 }
 
-pub fn check_for_dir (pathname: PathBuf) -> Result<()> {
+// Check if the directory has been created.
+fn check_for_dir (pathname: PathBuf) -> Result<()> {
     if pathname.exists() {
         println!("{} already exists.", pathname.display());
          return Ok(())
@@ -33,7 +35,8 @@ pub fn check_for_dir (pathname: PathBuf) -> Result<()> {
     Ok(())
 }
 
-pub fn check_for_file(filename: &str, path: PathBuf) -> Result<()> {
+// Check if the file has been created.
+fn check_for_file(filename: &str, path: PathBuf) -> Result<()> {
     let filepath = path.join(filename);
 
     if !filepath.exists() {
