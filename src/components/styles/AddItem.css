@@ -1,0 +1,10 @@
+.add-container {
+    margin-top: 5px;;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    border: 1px solid rgb(43, 42, 42);
+    border-radius: 4px;
+    
+}

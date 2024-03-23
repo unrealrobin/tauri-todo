@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { invoke } from "@tauri-apps/api/tauri";
 import Item from "./components/item";
+import AddItem from "./components/add-item";
 
 
 function App() {
@@ -14,12 +15,9 @@ function App() {
 
   return (
     <div className="container">
-      <h1>Welcome to Tauri!</h1>
-
-      <p>Add todo items below.</p>
-      
+      <h1>Add todo items below.</h1>
       <Item />
-
+      <AddItem />
       
     </div>
   );
