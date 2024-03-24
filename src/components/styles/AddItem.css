@@ -1,10 +1,28 @@
 .add-container {
-    margin-top: 5px;;
+
+    margin-top: 15px;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 50%;
+    width: 70%;
     border: 1px solid rgb(43, 42, 42);
     border-radius: 4px;
-    
+    background-color: aliceblue;
+    color: black;
+}
+
+.input-container {
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    width: 80%;
+}
+
+.input-container > * {
+    margin-right: 5px;
+}
+
+.input-container > :first-child {
+    width: 75%;
 }

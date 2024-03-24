@@ -18,7 +18,7 @@ fn main() {
     match setup_dir() {
         Ok(()) => {
             tauri::Builder::default()
-            .invoke_handler(tauri::generate_handler![crudops::read_db])
+            .invoke_handler(tauri::generate_handler![crudops::read_db, crudops::create_item, crudops::delete_item])
             .run(tauri::generate_context!())
             .expect("error while running tauri application");
         }

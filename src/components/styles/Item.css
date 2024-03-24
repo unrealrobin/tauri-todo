@@ -2,18 +2,27 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 50%;
+    width: 80%;
+    padding-top: 5px;
+    margin-top: 5px;
+    
     
 }
 
 .text-input {
-    width: 60% ;
+    width: 75% ;
 }
 
 .button-container {
-    width: 15%;
+    width: 24%;
     height: 100%;;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
+    display: flex;
+    
+}
+
+.button-container > button {
+    margin-left: 5px;
 }

@@ -12,9 +12,9 @@ pub struct TodoItem {
 }
 
 #[tauri::command]
-pub fn create_item(text: &str)  {
+pub fn create_item(text: String)  {
     let new_item = TodoItem {
-        text: String::from(text),
+        text: text,
         is_complete: false,
     };
 
@@ -22,8 +22,8 @@ pub fn create_item(text: &str)  {
 }
 
 #[tauri::command]
-pub fn delete_item(key: i32) -> Result<(), Box<dyn std::error::Error>> {
-    let mut map = read_db()?;
+pub fn delete_item(key: i32) -> Result<(), String> {
+    let mut map = read_db().map_err(|e| e.to_string())?;
 
     map.remove(&key);
 
@@ -32,7 +32,7 @@ pub fn delete_item(key: i32) -> Result<(), Box<dyn std::error::Error>> {
         new_map.insert(new_key as i32, value);
     }
 
-    write_to_db(new_map)?;
+    write_to_db(new_map).map_err(|e| e.to_string())?;
 
     Ok(())
 }
@@ -59,7 +59,7 @@ pub fn read_db() -> Result<BTreeMap<i32, TodoItem>, String> {
     let data: String = fs::read_to_string("C:/folio/tododb.json").map_err(|e| e.to_string())?;
     let todo_list: BTreeMap<i32, TodoItem> = serde_json::from_str(&data).map_err(|e| e.to_string())?;
 
-    println!("Data from db is: {:?}", todo_list);
+    //println!("Data from db is: {:?}", todo_list);
     Ok(todo_list)
 }
 
