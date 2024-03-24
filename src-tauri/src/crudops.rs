@@ -1,5 +1,3 @@
-use crate::setupfile::setup_dir;
-
 use serde::{Deserialize, Serialize};
 use std::{collections::BTreeMap, io::Result as IoResult};
 use std::fs;
@@ -34,6 +32,23 @@ pub fn delete_item(key: i32) -> Result<(), Box<dyn std::error::Error>> {
     }
 
     write_to_db(new_map)?;
+
+    Ok(())
+}
+
+#[tauri::command]
+pub fn update_item(key: i32, text: &str, new_status: bool) -> Result<(), Box<dyn std::error::Error>> {
+    let mut list = read_db()?;
+
+    if let Some(item) = list.get_mut(&key) {
+        item.text = String::from(text);
+        item.is_complete = new_status;
+    } else {
+        return Err(Box::new(std::io::Error::new(std::io::ErrorKind::NotFound, "Key not found in list")));
+    }
+
+    clear_db()?;
+    write_to_db(list)?;
 
     Ok(())
 }
@@ -79,7 +94,6 @@ pub fn clear_db () -> Result<(), std::io::Error> {
 }
 
 pub fn initialize_db () -> Result<(), Box<dyn std::error::Error>> {
-    setup_dir()?;
 
     let map: BTreeMap<i32, TodoItem> = BTreeMap::new();
 
@@ -89,23 +103,3 @@ pub fn initialize_db () -> Result<(), Box<dyn std::error::Error>> {
 
 }
 
-pub fn update_item(key: i32, text: &str, new_status: bool) -> Result<(), Box<dyn std::error::Error>> {
-    let mut list = read_db()?;
-
-    if let Some(item) = list.get_mut(&key) {
-        item.text = String::from(text);
-        item.is_complete = new_status;
-    } else {
-        return Err(Box::new(std::io::Error::new(std::io::ErrorKind::NotFound, "Key not found in list")));
-    }
-
-    clear_db()?;
-
-
-
-    write_to_db(list)?;
-
-    Ok(())
-
-
-}

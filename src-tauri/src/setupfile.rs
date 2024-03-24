@@ -1,6 +1,7 @@
 use std::io::Result;
 use std::fs;
 use std::path::{Path, PathBuf};
+use crate::crudops::initialize_db;
 
 
 // Setup the Directory and File for storing users todo json data.
@@ -42,6 +43,8 @@ fn check_for_file(filename: &str, path: PathBuf) -> Result<()> {
     if !filepath.exists() {
         println!("File has been created at {:?}", filepath);
         fs::File::create(filepath)?;
+
+        initialize_db().expect("Unable to Initialize DB.");
     } else {
         println!("File already Exists.");
     }
