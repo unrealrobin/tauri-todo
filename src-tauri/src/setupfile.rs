@@ -1,7 +1,8 @@
 use std::io::Result;
 use std::fs;
 use std::path::{Path, PathBuf};
-use crate::crudops::initialize_db;
+use crate::crudops::initialize_db; 
+
 
 
 // Setup the Directory and File for storing users todo json data.
@@ -20,7 +21,7 @@ pub fn setup_dir() -> Result<()> {
 // Create the directory for storing json data.
 fn create_dir(pathname: PathBuf) -> Result<()> {
     fs::create_dir(pathname)?;
-    return Ok(())
+    Ok(())
     
 }
 

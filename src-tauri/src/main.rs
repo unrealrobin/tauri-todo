@@ -2,10 +2,9 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod setupfile;
-mod crudops;
-
 use setupfile::setup_dir;
-use crudops::{create_item, delete_item, initialize_db, read_db, update_item};
+mod crudops;
+use crudops::read_db;
 
 // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
 //
@@ -19,7 +18,7 @@ fn main() {
     match setup_dir() {
         Ok(()) => {
             tauri::Builder::default()
-            .invoke_handler(tauri::generate_handler![greet])
+            .invoke_handler(tauri::generate_handler![crudops::read_db])
             .run(tauri::generate_context!())
             .expect("error while running tauri application");
         }

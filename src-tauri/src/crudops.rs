@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 use std::{collections::BTreeMap, io::Result as IoResult};
 use std::fs;
+use anyhow::{Result, Error};
 
 //use std::collections::BTreeMap;
 
@@ -53,9 +54,10 @@ pub fn update_item(key: i32, text: &str, new_status: bool) -> Result<(), Box<dyn
     Ok(())
 }
 
-pub fn read_db () -> Result<BTreeMap<i32, TodoItem>, Box<dyn std::error::Error>> {
-    let data: String = fs::read_to_string("C:/folio/tododb.json")?;
-    let todo_list: BTreeMap<i32, TodoItem> = serde_json::from_str(&data)?;
+#[tauri::command]
+pub fn read_db() -> Result<BTreeMap<i32, TodoItem>, String> {
+    let data: String = fs::read_to_string("C:/folio/tododb.json").map_err(|e| e.to_string())?;
+    let todo_list: BTreeMap<i32, TodoItem> = serde_json::from_str(&data).map_err(|e| e.to_string())?;
 
     println!("Data from db is: {:?}", todo_list);
     Ok(todo_list)
