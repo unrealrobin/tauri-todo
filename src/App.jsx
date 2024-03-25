@@ -26,13 +26,13 @@ function App() {
     <div className="container">
       <h1>Add todo items below.</h1>
       {
-      Object.keys(listData).map((key) => (
+      Object.keys(listData).map((listkey) => (
         <Item 
           refreshTodos={readDb}
           key={uuidv4()} 
-          id={key}
-          text={listData[key].text} 
-          status={listData[key].is_complete} 
+          id={listkey}
+          text={listData[listkey].text} 
+          status={listData[listkey].is_complete} 
         />
       ))
 

@@ -38,18 +38,18 @@ pub fn delete_item(key: i32) -> Result<(), String> {
 }
 
 #[tauri::command]
-pub fn update_item(key: i32, text: &str, new_status: bool) -> Result<(), Box<dyn std::error::Error>> {
-    let mut list = read_db()?;
+pub fn update_item(key: i32, text: String, new_status: bool) -> Result<(), String> {
+    let mut list = read_db().map_err(|e| e.to_string())?;
 
     if let Some(item) = list.get_mut(&key) {
         item.text = String::from(text);
         item.is_complete = new_status;
     } else {
-        return Err(Box::new(std::io::Error::new(std::io::ErrorKind::NotFound, "Key not found in list")));
+        return Err(String::from("Key not found in list"));
     }
 
-    clear_db()?;
-    write_to_db(list)?;
+    clear_db().map_err(|e| e.to_string())?;
+    write_to_db(list).map_err(|e| e.to_string())?;
 
     Ok(())
 }
