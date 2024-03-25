@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import "./styles/Item.css"
 import { invoke } from "@tauri-apps/api/tauri";
 
@@ -12,6 +12,10 @@ function Item({text, status, key, id, refreshTodos}) {
         
         
     }
+
+    const buttonBackgroundColor = useCallback(() => {
+        return todoStatus ? "green" : "red";
+    }, [todoStatus]);
 
     const handleTextChange = (event) => {
         setText(event.target.value);
@@ -38,14 +42,14 @@ function Item({text, status, key, id, refreshTodos}) {
     
 
     return(
-        <div className="item-container" key={key} >
+        <div className="item-container" >
             <input className="text-input" type="text"  placeholder="What do you need to do?" value={todoText} onChange={handleTextChange}/>
             <div className="button-container">
-                <button className="status-button" type="checkbox" onClick={toggleStatus} >{todoStatus ? 'Complete' : 'Incomplete'}</button>
+                <button className="status-button" type="checkbox" onClick={toggleStatus} style={{backgroundColor: todoStatus ? "#2bff32" : "#ff3d2b", color: "#2d2e2d"}}  >{todoStatus ? 'Complete' : 'Incomplete'}</button>
                 <button  className="delete-button" onClick={handleDeleteItem}>X</button>
             </div>
         </div>
     )
 }
 
-export default Item;
+export default Item

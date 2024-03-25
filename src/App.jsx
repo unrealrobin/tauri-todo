@@ -24,7 +24,7 @@ function App() {
 
   return (
     <div className="container">
-      <h1>Add todo items below.</h1>
+      <h1>A Simple Todo List</h1>
       {
       Object.keys(listData).map((listkey) => (
         <Item 

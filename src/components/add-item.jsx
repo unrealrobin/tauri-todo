@@ -39,7 +39,7 @@ function AddItem({refreshTodos}) {
     return adding ?  (
         <div className="input-container">
             <input  type="text" value={todotext} placeholder="What do you need to do?" onChange={handleChange}  />
-            <button onClick={handleSubmit} > Submit </button>
+            <button onClick={handleSubmit} > Add </button>
             <button onClick={resetTodo}  > X </button>
         </div>
         
